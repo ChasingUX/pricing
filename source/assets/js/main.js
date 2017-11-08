@@ -637,6 +637,7 @@ $(function () {
       } else {
         //if not overridden, push back as is into the array
         nightly_dynamic_prices_new.push([currentDate,parseInt(currentPrice)])
+        min_prices.push([currentDate,parseInt(currentPrice)])
       }
     });
 
@@ -676,11 +677,14 @@ $(function () {
       animation: false,
       color: '#41A499',
       id: id,
+      className: 'suggested',
       label: '',
       zIndex: 1,
-      lineWidth: 0,
+      lineWidth: 1,
+      dashStyle: 'Dash',
       showInLegend: true,
       marker: {
+        enabled: false,
         lineWidth: 2,
         lineColor: '#C0CCCC',
         fillColor: '#ffffff',
@@ -705,7 +709,7 @@ $(function () {
   function invertColors(val){
     chart.series[1].update({
       threshold: val,
-      negativeColor: "#E6EDED"
+      negativeColor: "#efefef"
     });
   }
 
