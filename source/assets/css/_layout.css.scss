@@ -395,9 +395,12 @@ $wrapper_width: 1030px;
 .settings {
 
   h2 {
-    margin-top: 40px;
-    padding-top: 40px;
+    margin-top: 32px;
+    padding-top: 32px;
     border-top: 1px solid #EBEBEB;
+    font-family: 'Circular';
+    font-size: 19px;
+    letter-spacing: 0;
   }
 
   .wrapper {
@@ -406,6 +409,10 @@ $wrapper_width: 1030px;
       padding-left: 0;
       padding-right: 290px;
       margin: 0 auto 0 auto;
+
+      p {
+        max-width: 610px;
+      }
 
       .toolbar {
         width: calc(#{$wrapper_width} - 290px);
@@ -424,9 +431,7 @@ $wrapper_width: 1030px;
       border: 0;
 
       h3 {
-        font-size: 22px;
-        font-family: 'Circular_bold';
-        margin-top: 32px;
+        margin-top: 24px;
       }
 
       p {
@@ -435,16 +440,28 @@ $wrapper_width: 1030px;
     }
 
     .input_module {
-      margin-top: 32px;
+      margin-top: 0;
       padding: 0;
       width: 100%;
 
-      &:nth-child(even) {
-        padding-left: 12px;
+      p {
+        display: none;
       }
 
-      &:nth-child(odd) {
-        padding-right: 12px;
+      input {
+        margin-top: 8px;
+      }
+    }
+
+    .sp_on {
+      .input_module {
+        &:nth-child(even) {
+          padding-left: 12px;
+        }
+
+        &:nth-child(odd) {
+          padding-right: 12px;
+        }
       }
     }
   }
@@ -453,6 +470,14 @@ $wrapper_width: 1030px;
     .sp_on {
       display: flex;
       justify-content: space-between;
+    }
+  }
+
+  &.sp_off {
+    .sp_off {
+      margin-top: 32px;
+      padding-top: 32px;
+      border-top: 1px solid #EBEBEB;
     }
   }
 }
