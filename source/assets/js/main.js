@@ -423,6 +423,7 @@ $(function () {
       type: 'spline',
       name: nightlyLabel,
       data: $.extend(true,[],nightly_base_prices),
+      legendIndex:0,
       marker: {
         symbol: 'circle',
         enabled: false,
@@ -447,6 +448,7 @@ $(function () {
       data: ranges,
       color: '#C2EFEF',
       id: 'gradient-1',
+      legendIndex:2,
       // fillColor: {
       //   linearGradient: [0, 0, 0, 300],
       //   stops: [
@@ -683,6 +685,7 @@ $(function () {
       lineWidth: 1,
       dashStyle: 'Dash',
       showInLegend: true,
+      legendIndex:1,
       marker: {
         enabled: false,
         lineWidth: 2,
