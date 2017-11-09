@@ -292,7 +292,8 @@ $(function () {
     chart: {
       style: {
         fontFamily: 'Circular_light'
-      }
+      },
+      marginLeft: 0
     },
     title: {
         text: null

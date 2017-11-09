@@ -404,11 +404,14 @@ $wrapper_width: 1030px;
   }
 
   .wrapper {
+    max-width: $wrapper_width;
+    margin: 0 auto;
+
     .main {
-      width: $wrapper_width;
+      width: 100%;
+      max-width: 810px;
       padding-left: 0;
-      padding-right: 290px;
-      margin: 0 auto 0 auto;
+      margin: 0 32px;
 
       p {
         max-width: 610px;
@@ -417,22 +420,26 @@ $wrapper_width: 1030px;
       .toolbar {
         width: calc(#{$wrapper_width} - 290px);
         left: 50%;
-        margin-left: -516px;
+        margin-left: -484px;
         padding: 0;
+        box-shadow: 0px -9px 15px -7px rgba(0, 0, 0, 0.09);
       }
     }
 
     .toggle {
-      margin-top: 60px;
+      width: 48px;
+      height: 32px;
+      cursor: pointer;
+      display: flex;
+      align-self: center;
     }
 
     .smart-pricing {
       padding: 0;
       border: 0;
-
-      h3 {
-        margin-top: 24px;
-      }
+      margin-top: 40px;
+      display: flex;
+      justify-content: space-between;
 
       p {
         font-size: 19px;
@@ -464,20 +471,24 @@ $wrapper_width: 1030px;
         }
       }
     }
+
+    .sp_on, .sp_off {
+      margin-top: 32px;
+      padding-top: 32px;
+      border-top: 1px solid #EBEBEB;
+    }
+
+    .sp_off {
+      .input_module {
+        width: 358px;
+      }
+    }
   }
 
   &.sp_on {
     .sp_on {
       display: flex;
       justify-content: space-between;
-    }
-  }
-
-  &.sp_off {
-    .sp_off {
-      margin-top: 32px;
-      padding-top: 32px;
-      border-top: 1px solid #EBEBEB;
     }
   }
 }
