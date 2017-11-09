@@ -734,11 +734,11 @@ input.highcharts-range-selector {
   stroke: none;
 }
 
-.highcharts-series-2 {
-  .highcharts-graph {
-    stroke-width: 0;
-  }
-}
+// .highcharts-series-2 {
+//   .highcharts-graph {
+//     stroke-width: 0;
+//   }
+// }
 
 .highcharts-series-3.highcharts-series-hover {
     .highcharts-graph {
@@ -751,6 +751,13 @@ input.highcharts-range-selector {
     margin-top: 10px;
     white-space:normal !important;
     max-width: 220px!important;
+}
+
+.suggested {
+    .highcharts-graph {
+        stroke-width: 1.5;
+        stroke: #444444;
+    }
 }
 // .highcharts-markers.highcharts-series-0 {
 //   display: none;

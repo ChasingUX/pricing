@@ -292,7 +292,8 @@ $(function () {
     chart: {
       style: {
         fontFamily: 'Circular_light'
-      }
+      },
+      marginLeft: 0
     },
     title: {
         text: null
@@ -423,6 +424,7 @@ $(function () {
       type: 'spline',
       name: nightlyLabel,
       data: $.extend(true,[],nightly_base_prices),
+      legendIndex:0,
       marker: {
         symbol: 'circle',
         enabled: false,
@@ -447,6 +449,7 @@ $(function () {
       data: ranges,
       color: '#C2EFEF',
       id: 'gradient-1',
+      legendIndex:2,
       // fillColor: {
       //   linearGradient: [0, 0, 0, 300],
       //   stops: [
@@ -637,6 +640,7 @@ $(function () {
       } else {
         //if not overridden, push back as is into the array
         nightly_dynamic_prices_new.push([currentDate,parseInt(currentPrice)])
+        min_prices.push([currentDate,parseInt(currentPrice)])
       }
     });
 
@@ -676,11 +680,15 @@ $(function () {
       animation: false,
       color: '#41A499',
       id: id,
+      className: 'suggested',
       label: '',
       zIndex: 1,
-      lineWidth: 0,
+      lineWidth: 1,
+      dashStyle: 'Dash',
       showInLegend: true,
+      legendIndex:1,
       marker: {
+        enabled: false,
         lineWidth: 2,
         lineColor: '#C0CCCC',
         fillColor: '#ffffff',
@@ -705,7 +713,7 @@ $(function () {
   function invertColors(val){
     chart.series[1].update({
       threshold: val,
-      negativeColor: "#E6EDED"
+      negativeColor: "#efefef"
     });
   }
 
