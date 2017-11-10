@@ -406,9 +406,12 @@ $wrapper_width: 1030px;
 
 .settings, .settings-side {
 
+  nav {
+    position: static;
+  }
   h2 {
     margin-top: 32px;
-    padding-top: 32px;
+    padding-top: 40px;
     border-top: 1px solid #EBEBEB;
     font-family: 'Circular';
     font-size: 19px;
@@ -426,7 +429,7 @@ $wrapper_width: 1030px;
     .main {
       width: 100%;
       max-width: 810px;
-      padding-left: 0;
+      padding: 64px 70px 0 0;
       margin: 0 32px;
 
       p {
@@ -490,7 +493,7 @@ $wrapper_width: 1030px;
 
     .sp_on, .sp_off {
       margin-top: 32px;
-      padding-top: 32px;
+      padding-top: 40px;
       border-top: 1px solid #EBEBEB;
     }
 
@@ -568,7 +571,7 @@ $wrapper_width: 1030px;
 
         &:nth-child(odd) {
           padding-right: 0;
-          margin-bottom: 40px;
+          margin-bottom: 32px;
         }
       }
     }
