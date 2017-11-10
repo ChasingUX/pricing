@@ -449,7 +449,7 @@ $(function () {
       name: marketLabel,
       data: ranges,
       color: '#C2EFEF',
-      id: 'gradient-1',
+      id: 'band',
       legendIndex:2,
       // fillColor: {
       //   linearGradient: [0, 0, 0, 300],
@@ -473,11 +473,7 @@ $(function () {
     }]
   });
 
-  $("aside .banner").removeClass('is-hidden');
 
-  $(".banner .close").on('click', function(){
-    $(this).parent().addClass('is-hidden');
-  });
 
 
   //TURN SMART PRICING ON AND OFF
@@ -485,46 +481,28 @@ $(function () {
     $(this).toggleClass('on off');
 
     if($(this).hasClass('on')){
-      $('.contain span').text('on')
-
-      //remove banner
-      $('.banner').hide().addClass('is-hidden');
-
       $('body').removeClass('sp_off').addClass('sp_on');
+      //remove banner
+      //$('.banner').hide().addClass('is-hidden');
 
       //replace data from base to dynamic
       chart.series[0].setData(nightly_dynamic_prices, {
         redraw: true
       });
 
-
     } else {
-
-      $('.contain span').text('off')
       $('body').removeClass('sp_on').addClass('sp_off');
 
-      $('.banner').show().removeClass('is-hidden');
+      //$('.banner').show().removeClass('is-hidden');
 
       //remove plot lines
       removeLine('minimum');
       removeLine('maximum');
 
-      if(typeof chart.series[2] !== "undefined") {
-        //remove min legend
-        chart.series[2].update({
-          showInLegend: false
-        });
+      //remove chart inversion
+      invertColors(0)
 
-        min_prices = [];
-
-        invertColors(val)
-
-        chart.series[2].setData(min_prices, {
-          redraw: true
-        });
-
-        val = 0;
-      }
+      destroySuggestionsLineIfExist()
 
       //replace data from dynamic to base
       chart.series[0].setData(nightly_base_prices, {
@@ -612,10 +590,21 @@ $(function () {
       nightly_base_prices.push([value.x,parseInt(val)])
     });
 
+    var mainSeries = chart.get('nightly');
+
     //replace data
-    chart.series[0].setData(nightly_base_prices, {
+    mainSeries.setData(nightly_base_prices, {
       redraw: true
     });
+  }
+
+  function destroySuggestionsLineIfExist(){
+    var minSeries = chart.get('min_bound');
+
+    if(typeof minSeries !== "undefined") {
+      console.log("the min graph exists and should be destroyed")
+      minSeries.remove();
+    }
   }
 
   function minBound(newMinPrice){
@@ -650,31 +639,17 @@ $(function () {
     });
 
 
-    // if(!minBound) {
-    //   chart.series[2].update({
-    //     showInLegend: false
-    //   });
-    // }
-
-    var minSeries = chart.get('jesse');
-
-    if(typeof minSeries !== "undefined") {
-      console.log("the min graph exists and should be destroyed")
-      minSeries.remove();
-    }
+    destroySuggestionsLineIfExist();
 
 
     if(minBound) {
-      console.log('min bound')
-      console.log('pop a banner');
+      console.log('min bound, pop a banner');
       // $("aside .banner").removeClass('is-hidden');
     }
     else {
       console.log('not min bound')
       //$("aside .banner").addClass('is-hidden');
     }
-
-
 
     //if min bound, show new chart
     if(minBound) {
@@ -684,7 +659,7 @@ $(function () {
         data: min_prices,
         animation: false,
         color: '#41A499',
-        id: 'jesse',
+        id: 'min_bound',
         className: 'suggested',
         label: '',
         zIndex: 1,
@@ -712,12 +687,12 @@ $(function () {
         }
       });
     }
-
-
   }
 
   function invertColors(val){
-    chart.series[1].update({
+    var marketBand = chart.get('band');
+
+    marketBand.update({
       threshold: val,
       negativeColor: "#efefef"
     });
@@ -734,6 +709,7 @@ $(function () {
   $(".max_price input").on('blur', function(){
     var newValue = $(this).val();
     removeLine('maximum');
+    //invertColors(newValue);
     addMaxLine(newValue);
   });
 
@@ -742,7 +718,11 @@ $(function () {
     newBase(newValue);
   });
 
-  // console.log(chart.yAxis[0].min)
+  $("aside .banner").removeClass('is-hidden');
+
+  $(".banner .close").on('click', function(){
+    $(this).parent().addClass('is-hidden');
+  });
 
   //allow enter key to work like tabs in inputs
   $('input').on("keypress", function(e) {
