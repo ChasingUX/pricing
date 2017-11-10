@@ -293,7 +293,12 @@ $(function () {
       style: {
         fontFamily: 'Circular_light'
       },
-      marginLeft: 0
+      marginLeft: 0,
+      events: {
+        // load: function(event){
+        //   alert('load')
+        // }
+      }
     },
     title: {
         text: null
@@ -349,6 +354,9 @@ $(function () {
         },
         x: 8
       },
+      crosshair: {
+        zIndex: 20
+      }
     },
     yAxis: {
       title: {
@@ -368,7 +376,7 @@ $(function () {
       min: 100,
       // max: 350,
       // tickInterval: 100,
-      opposite: true,
+      opposite: true
     },
     tooltip: {
       crosshairs: true,
@@ -423,6 +431,7 @@ $(function () {
     series: [{
       type: 'spline',
       name: nightlyLabel,
+      zIndex: 1000,
       data: $.extend(true,[],nightly_base_prices),
       id: 'nightly',
       legendIndex:0,
@@ -442,15 +451,15 @@ $(function () {
         }
       },
       color: '#00A699',
-      label: '',
-      zIndex: 2
+      label: ''
     }, {
       type: 'arearange',
       name: marketLabel,
       data: ranges,
-      color: '#C2EFEF',
+      color: '#d1f3f3',
       id: 'band',
       legendIndex:2,
+      zIndex: 1,
       // fillColor: {
       //   linearGradient: [0, 0, 0, 300],
       //   stops: [
@@ -466,7 +475,6 @@ $(function () {
           enabled: false
         }
       },
-      zIndex: 0,
       marker: {
         enabled: false
       }
@@ -528,7 +536,7 @@ $(function () {
       value: val,
       width: 1,
       id: 'minimum',
-      zIndex: 1,
+      zIndex: 2,
       label: {
         text: "Min Price",
         useHTML: true,
@@ -546,7 +554,7 @@ $(function () {
       value: val,
       width: 1,
       id: 'maximum',
-      zIndex: 1,
+      zIndex: 2,
       label: {
         text: "Max Price",
         useHTML: true,
@@ -662,7 +670,7 @@ $(function () {
         id: 'min_bound',
         className: 'suggested',
         label: '',
-        zIndex: 1,
+        zIndex: 5,
         lineWidth: 1,
         dashStyle: 'Dash',
         showInLegend: true,
@@ -693,8 +701,12 @@ $(function () {
     var marketBand = chart.get('band');
 
     marketBand.update({
-      threshold: val,
-      negativeColor: "#efefef"
+      // threshold: val,
+      // negativeColor: "#efefef",
+      zones: [{
+        value: val,
+        className: 'below'
+      }]
     });
   }
 
@@ -704,6 +716,7 @@ $(function () {
     invertColors(newValue);
     addMinLine(newValue);
     minBound(newValue);
+
   });
 
   $(".max_price input").on('blur', function(){

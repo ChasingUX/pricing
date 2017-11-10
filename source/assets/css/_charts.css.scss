@@ -266,7 +266,7 @@ g.highcharts-series,
     fill: none;
 }
 .highcharts-halo {
-    fill-opacity: 0.25;
+    // fill-opacity: 0.25;
     stroke-width: 0;
     display: none;
 
@@ -287,7 +287,7 @@ g.highcharts-series,
   box-shadow: none;
 }
 .highcharts-column-series .highcharts-point-hover {
-    fill-opacity: 0.75;
+    // fill-opacity: 0.75;
     transition: fill-opacity 50ms;
 }
 .highcharts-pie-series .highcharts-point {
@@ -295,7 +295,7 @@ g.highcharts-series,
     stroke: $background-color;
 }
 .highcharts-pie-series .highcharts-point-hover {
-    fill-opacity: 0.75;
+    // fill-opacity: 0.75;
     transition: fill-opacity 50ms;
 }
 .highcharts-funnel-series .highcharts-point {
@@ -303,7 +303,7 @@ g.highcharts-series,
     stroke: $background-color;
 }
 .highcharts-funnel-series .highcharts-point-hover {
-    fill-opacity: 0.75;
+    // fill-opacity: 0.75;
     transition: fill-opacity 50ms;
 }
 .highcharts-funnel-series .highcharts-point-select {
@@ -315,7 +315,7 @@ g.highcharts-series,
     stroke: $background-color;
 }
 .highcharts-pyramid-series .highcharts-point-hover {
-    fill-opacity: 0.75;
+    // fill-opacity: 0.75;
     transition: fill-opacity 50ms;
 }
 .highcharts-pyramid-series .highcharts-point-select {
@@ -346,7 +346,7 @@ g.highcharts-series,
     cursor: pointer;
 }
 .highcharts-treemap-series .highcharts-internal-node-interactive:hover {
-    fill-opacity: 0.75;
+    // fill-opacity: 0.75;
 }
 
 
@@ -792,5 +792,17 @@ input.highcharts-range-selector {
         line-height: 1.1;
         color: #7b7b7b;
         margin-top: -1px;
+    }
+}
+
+
+
+.highcharts-area {
+    // fill: #d1f3f3;
+    fill: rgba(11,181,181,.2);
+
+    &.below {
+        // fill: #efefef;
+        fill: rgba(164,164,164,.2);
     }
 }
