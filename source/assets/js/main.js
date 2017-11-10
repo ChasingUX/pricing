@@ -293,12 +293,7 @@ $(function () {
       style: {
         fontFamily: 'Circular_light'
       },
-      marginLeft: 0,
-      events: {
-        // load: function(event){
-        //   alert('load')
-        // }
-      }
+      marginLeft: 0
     },
     title: {
         text: null
@@ -482,18 +477,16 @@ $(function () {
   });
 
 
-
-
-  //TURN SMART PRICING ON AND OFF
   $(".toggle").on('click', function(){
     $(this).toggleClass('on off');
 
     if($(this).hasClass('on')){
       $('body').removeClass('sp_off').addClass('sp_on');
-      //remove banner
+
       //$('.banner').hide().addClass('is-hidden');
 
-      //replace data from base to dynamic
+      $(".input_module input").val('');
+
       chart.series[0].setData(nightly_dynamic_prices, {
         redraw: true
       });
@@ -503,16 +496,13 @@ $(function () {
 
       //$('.banner').show().removeClass('is-hidden');
 
-      //remove plot lines
       removeLine('minimum');
       removeLine('maximum');
 
-      //remove chart inversion
       invertColors(0, 'reset')
 
       destroySuggestionsLineIfExist()
 
-      //replace data from dynamic to base
       chart.series[0].setData(nightly_base_prices, {
         redraw: true
       });
@@ -591,26 +581,22 @@ $(function () {
 
     var minBound = false;
 
-    // loop through every single price
     $.each( nightly_dynamic_prices, function( index, value ){
 
       var currentDate = value[0];
       var currentPrice = value[1];
 
       if(newMinPrice > currentPrice) {
-        // store x value (date) and y.value into new array
         nightly_dynamic_prices_new.push([currentDate,parseInt(newMinPrice)])
         min_prices.push([currentDate,parseInt(currentPrice)])
 
         minBound = true;
       } else {
-        //if not overridden, push back as is into the array
         nightly_dynamic_prices_new.push([currentDate,parseInt(currentPrice)])
         min_prices.push([currentDate,parseInt(currentPrice)])
       }
     });
 
-    //update the green line
     var nightly_prices = chart.get('nightly');
     nightly_prices.setData(nightly_dynamic_prices_new, {
       redraw: true
@@ -629,7 +615,6 @@ $(function () {
       //$("aside .banner").addClass('is-hidden');
     }
 
-    //if min bound, show new chart
     if(minBound) {
       chart.addSeries({
         type: 'spline',
@@ -673,9 +658,6 @@ $(function () {
 
     if(type == 'min'){
       minVar = val;
-
-      console.log("min: " + minVar)
-      //need to run a check if max exists and if so include that
 
       if(maxVar) {
         var currentMax = chart.yAxis[0].max;
@@ -752,8 +734,6 @@ $(function () {
         zones: [{value: 0}]
       });
     }
-
-
   }
 
   var initMax = chart.yAxis[0].max;
@@ -801,7 +781,6 @@ $(function () {
     else if(parentType.hasClass('nightly_price')){
       newBase(value);
     }
-
   });
 
   $(".min_price input").on('blur', function(){
@@ -825,7 +804,6 @@ $(function () {
     $(this).parent().addClass('is-hidden');
   });
 
-  //allow enter key to work like tabs in inputs
   $('input').on("keypress", function(e) {
     if (e.keyCode == 13) {
       $(this).blur();
