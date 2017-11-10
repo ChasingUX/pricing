@@ -567,30 +567,6 @@ $(function () {
     chart.yAxis[0].removePlotLine(id);
   }
 
-  $(".tip").on('click', function(e){
-    e.preventDefault();
-
-    var parentType = $(this).parent('div');
-    var input = $(this).prev('input');
-    var value = $(this).find('span').text();
-
-    input.val(value);
-
-    if(parentType.hasClass('min_price')){
-      addMinLine(value);
-      minBound(value);
-      invertColors(value);
-    }
-    else if(parentType.hasClass('max_price')){
-      addMaxLine(value);
-    }
-    else if(parentType.hasClass('nightly_price')){
-      //replace data
-      newBase(value);
-    }
-
-  });
-
   function newBase(val){
     nightly_base_prices = [];
 
@@ -710,20 +686,50 @@ $(function () {
     });
   }
 
+  function maxHandler(value){
+    removeLine('maximum');
+    addMaxLine(value);
+    chart.yAxis[0].update({
+      max: value
+    })
+  }
+
+  function minHandler(value){
+    removeLine('minimum');
+    invertColors(value);
+    addMinLine(value);
+    minBound(value);
+  }
+
+  $(".tip").on('click', function(e){
+    e.preventDefault();
+
+    var parentType = $(this).parent('div');
+    var input = $(this).prev('input');
+    var value = $(this).find('span').text();
+
+    input.val(value);
+
+    if(parentType.hasClass('min_price')){
+      minHandler(value)
+    }
+    else if(parentType.hasClass('max_price')){
+      maxHandler(value)
+    }
+    else if(parentType.hasClass('nightly_price')){
+      newBase(value);
+    }
+
+  });
+
   $(".min_price input").on('blur', function(){
     var newValue = $(this).val();
-    removeLine('minimum');
-    invertColors(newValue);
-    addMinLine(newValue);
-    minBound(newValue);
-
+    minHandler(newValue);
   });
 
   $(".max_price input").on('blur', function(){
     var newValue = $(this).val();
-    removeLine('maximum');
-    //invertColors(newValue);
-    addMaxLine(newValue);
+    maxHandler(newValue);
   });
 
   $(".nightly_price input").on('blur', function(){
