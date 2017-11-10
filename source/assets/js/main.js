@@ -687,11 +687,16 @@ $(function () {
   }
 
   function maxHandler(value){
+    var currentMax = chart.yAxis[0].max;
+
     removeLine('maximum');
     addMaxLine(value);
-    chart.yAxis[0].update({
-      max: value
-    })
+
+    if(value > currentMax) {
+      chart.yAxis[0].update({
+        max: value
+      })
+    }
   }
 
   function minHandler(value){
