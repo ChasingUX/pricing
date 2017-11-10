@@ -424,6 +424,7 @@ $(function () {
       type: 'spline',
       name: nightlyLabel,
       data: $.extend(true,[],nightly_base_prices),
+      id: 'nightly',
       legendIndex:0,
       marker: {
         symbol: 'circle',
@@ -617,9 +618,6 @@ $(function () {
     });
   }
 
-  var minBoundDestroyCount = 0;
-
-
   function minBound(newMinPrice){
     nightly_dynamic_prices_new = [];
     min_prices = [];
@@ -645,9 +643,12 @@ $(function () {
       }
     });
 
-    chart.series[0].setData(nightly_dynamic_prices_new, {
+    //update the green line
+    var nightly_prices = chart.get('nightly');
+    nightly_prices.setData(nightly_dynamic_prices_new, {
       redraw: true
     });
+
 
     // if(!minBound) {
     //   chart.series[2].update({
@@ -655,58 +656,62 @@ $(function () {
     //   });
     // }
 
+    var minSeries = chart.get('jesse');
+
+    if(typeof minSeries !== "undefined") {
+      console.log("the min graph exists and should be destroyed")
+      minSeries.remove();
+    }
 
 
     if(minBound) {
-      // console.log('min bound')
-      //pop a banner
+      console.log('min bound')
+      console.log('pop a banner');
       // $("aside .banner").removeClass('is-hidden');
     }
     else {
-      console.log('DESTROY SERIES')
-
-      var id = 'min_price_' + minBoundDestroyCount,
-          series = chart.get(id);
-      series.remove();
-
-      minBoundDestroyCount = minBoundDestroyCount++;
+      console.log('not min bound')
+      //$("aside .banner").addClass('is-hidden');
     }
 
-    var id = 'min_price_' + minBoundDestroyCount;
 
-    chart.addSeries({
-      type: 'spline',
-      name: 'Suggested Price',
-      data: min_prices,
-      animation: false,
-      color: '#41A499',
-      id: id,
-      className: 'suggested',
-      label: '',
-      zIndex: 1,
-      lineWidth: 1,
-      dashStyle: 'Dash',
-      showInLegend: true,
-      legendIndex:1,
-      marker: {
-        enabled: false,
-        lineWidth: 2,
-        lineColor: '#C0CCCC',
-        fillColor: '#ffffff',
-        symbol: 'circle',
-        states: {
-          hover: {
-            lineColor: '#484848',
-            radius: 5,
-            lineWidthPlus: 0,
-            radiusPlus: 0,
-            animation: {
-              duration: 0
+
+    //if min bound, show new chart
+    if(minBound) {
+      chart.addSeries({
+        type: 'spline',
+        name: 'Suggested Price',
+        data: min_prices,
+        animation: false,
+        color: '#41A499',
+        id: 'jesse',
+        className: 'suggested',
+        label: '',
+        zIndex: 1,
+        lineWidth: 1,
+        dashStyle: 'Dash',
+        showInLegend: true,
+        legendIndex:1,
+        marker: {
+          enabled: false,
+          lineWidth: 2,
+          lineColor: '#C0CCCC',
+          fillColor: '#ffffff',
+          symbol: 'circle',
+          states: {
+            hover: {
+              lineColor: '#484848',
+              radius: 5,
+              lineWidthPlus: 0,
+              radiusPlus: 0,
+              animation: {
+                duration: 0
+              }
             }
           }
         }
-      }
-    });
+      });
+    }
 
 
   }
