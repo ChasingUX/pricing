@@ -293,7 +293,16 @@ $(function () {
       style: {
         fontFamily: 'Circular_light'
       },
-      marginLeft: 0
+      marginLeft: 0,
+      events: {
+        load: function(event) {
+           $('.tip').tipr({
+              'speed': 300,
+              'mode': 'above',
+              'space': 70
+           });
+        }
+      }
     },
     title: {
         text: null
@@ -315,14 +324,14 @@ $(function () {
       margin: 48,
       itemDistance: 32,
       itemHoverStyle: '$484848',
-      // labelFormatter: function () {
+      labelFormatter: function () {
 
-      //   if(this.name == marketLabel) {
-      //     return this.name + ' · <a href="#">Learn more</a>';
-      //   } else {
-      //     return this.name;
-      //   }
-      // },
+        if(this.name == marketLabel) {
+          return '<a data-tooltip="nada" class="tooltip-top" href="#">' + this.name + '<span>?</span></a>';
+        } else {
+          return this.name;
+        }
+      },
       useHTML: true
     },
     xAxis: {
