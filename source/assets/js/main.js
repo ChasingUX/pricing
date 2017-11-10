@@ -293,16 +293,7 @@ $(function () {
       style: {
         fontFamily: 'Circular_light'
       },
-      marginLeft: 0,
-      events: {
-        load: function(event) {
-           $('.tip').tipr({
-              'speed': 300,
-              'mode': 'above',
-              'space': 70
-           });
-        }
-      }
+      marginLeft: 0
     },
     title: {
         text: null
@@ -628,6 +619,7 @@ $(function () {
 
   var minBoundDestroyCount = 0;
 
+
   function minBound(newMinPrice){
     nightly_dynamic_prices_new = [];
     min_prices = [];
@@ -732,7 +724,6 @@ $(function () {
     invertColors(newValue);
     addMinLine(newValue);
     minBound(newValue);
-
   });
 
   $(".max_price input").on('blur', function(){
@@ -747,4 +738,12 @@ $(function () {
   });
 
   // console.log(chart.yAxis[0].min)
+
+  //allow enter key to work like tabs in inputs
+  $('input').on("keypress", function(e) {
+    if (e.keyCode == 13) {
+      $(this).blur();
+      return false;
+    }
+  });
 });
