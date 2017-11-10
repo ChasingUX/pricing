@@ -678,6 +678,9 @@ $(function () {
       //need to run a check if max exists and if so include that
 
       if(maxVar) {
+        var currentMax = chart.yAxis[0].max;
+        var top = currentMax + maxVar;
+
         marketBand.update({
           zones: [
             {
@@ -687,6 +690,10 @@ $(function () {
             {
               value: maxVar,
               className: 'mid'
+            },
+            {
+              value: top,
+              className: 'top'
             }
           ]
         });
@@ -731,6 +738,10 @@ $(function () {
             {
               value: maxVar,
               className: 'mid'
+            },
+            {
+              value: top,
+              className: 'top'
             }
           ]
         });
@@ -745,6 +756,7 @@ $(function () {
 
   }
 
+  var initMax = chart.yAxis[0].max;
   function maxHandler(value){
     var currentMax = chart.yAxis[0].max;
 
@@ -755,6 +767,11 @@ $(function () {
     if(value > currentMax) {
       chart.yAxis[0].update({
         max: value
+      })
+    }
+    else if (value < initMax) {
+      chart.yAxis[0].update({
+        max: initMax
       })
     }
   }
