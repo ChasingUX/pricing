@@ -796,13 +796,33 @@ input.highcharts-range-selector {
 }
 
 
+// .highcharts-zone-area-0 {
+//     fill: rgba(11,181,181,.2);
+// }
 
+// .highcharts-zone-area-1 {
+//     fill: red;
+// }
+
+// .highcharts-zone-area-2 {
+//     fill: green;
+// }
+
+// .highcharts-zone-area-3 {
+//     fill: blue;
+// }
 .highcharts-area {
     // fill: #d1f3f3;
     fill: rgba(11,181,181,.2);
 
     &.below {
-        // fill: #efefef;
-        fill: rgba(164,164,164,.2);
+        fill: rgba(164,164,164,.2)
+    }
+
+    &.mid {
+      fill: rgba(11,181,181,.2);;
+    }
+    &.top {
+        fill: rgba(164,164,164,.2)
     }
 }

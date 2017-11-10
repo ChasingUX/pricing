@@ -508,7 +508,7 @@ $(function () {
       removeLine('maximum');
 
       //remove chart inversion
-      invertColors(0)
+      invertColors(0, 'reset')
 
       destroySuggestionsLineIfExist()
 
@@ -519,13 +519,7 @@ $(function () {
     }
   });
 
-  function invertColors(val){
-    chart.series[1].update({name:'new title'});
-    chart.series[1].update({
-      threshold: val,
-      negativeColor: "#F3F5F5"
-    });
-  }
+
 
   function addMinLine(val){
     removeLine('minimum');
@@ -673,17 +667,82 @@ $(function () {
     }
   }
 
-  function invertColors(val){
+  var minVar, maxVar;
+  function invertColors(val, type){
     var marketBand = chart.get('band');
 
-    marketBand.update({
-      // threshold: val,
-      // negativeColor: "#efefef",
-      zones: [{
-        value: val,
-        className: 'below'
-      }]
-    });
+    if(type == 'min'){
+      minVar = val;
+
+      console.log("min: " + minVar)
+      //need to run a check if max exists and if so include that
+
+      if(maxVar) {
+        marketBand.update({
+          zones: [
+            {
+              value: minVar,
+              className: 'below'
+            },
+            {
+              value: maxVar,
+              className: 'mid'
+            }
+          ]
+        });
+      } else {
+        marketBand.update({
+          zones: [
+            {
+              value: minVar,
+              className: 'below'
+            }
+          ]
+        });
+      }
+    }
+    else if (type == 'max'){
+      maxVar = val;
+
+      var currentMax = chart.yAxis[0].max;
+      var top = currentMax + maxVar;
+
+      console.log(maxVar)
+      if(minVar) {
+        marketBand.update({
+          zones: [
+            {
+              value: minVar,
+              className: 'below'
+            },
+            {
+              value: maxVar,
+              className: 'mid'
+            },
+            {
+              value: top,
+              className: 'top'
+            }
+          ]
+        });
+      } else {
+        marketBand.update({
+          zones: [
+            {
+              value: maxVar,
+              className: 'mid'
+            }
+          ]
+        });
+      }
+    }
+    else if (type= 'reset'){
+      marketBand.update({
+        zones: [{value: 0}]
+      });
+    }
+
+
   }
 
   function maxHandler(value){
@@ -691,6 +750,7 @@ $(function () {
 
     removeLine('maximum');
     addMaxLine(value);
+    invertColors(value, 'max');
 
     if(value > currentMax) {
       chart.yAxis[0].update({
@@ -701,7 +761,7 @@ $(function () {
 
   function minHandler(value){
     removeLine('minimum');
-    invertColors(value);
+    invertColors(value, 'min');
     addMinLine(value);
     minBound(value);
   }
