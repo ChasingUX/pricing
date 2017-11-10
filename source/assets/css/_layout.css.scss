@@ -419,6 +419,10 @@ $wrapper_width: 1030px;
     max-width: 1094px;
     margin: 0 auto;
 
+    #container {
+      padding-bottom: 150px;
+    }
+
     .main {
       width: 100%;
       max-width: 810px;

@@ -349,6 +349,9 @@ $(function () {
         },
         x: 8
       },
+      crosshair: {
+        zIndex: 20
+      }
     },
     yAxis: {
       title: {
@@ -368,7 +371,7 @@ $(function () {
       min: 100,
       // max: 350,
       // tickInterval: 100,
-      opposite: true,
+      opposite: true
     },
     tooltip: {
       crosshairs: true,
@@ -423,7 +426,9 @@ $(function () {
     series: [{
       type: 'spline',
       name: nightlyLabel,
+      zIndex: 1000,
       data: $.extend(true,[],nightly_base_prices),
+      id: 'nightly',
       legendIndex:0,
       marker: {
         symbol: 'circle',
@@ -441,15 +446,15 @@ $(function () {
         }
       },
       color: '#00A699',
-      label: '',
-      zIndex: 2
+      label: ''
     }, {
       type: 'arearange',
       name: marketLabel,
       data: ranges,
-      color: '#C2EFEF',
-      id: 'gradient-1',
+      color: '#d1f3f3',
+      id: 'band',
       legendIndex:2,
+      zIndex: 1,
       // fillColor: {
       //   linearGradient: [0, 0, 0, 300],
       //   stops: [
@@ -465,80 +470,46 @@ $(function () {
           enabled: false
         }
       },
-      zIndex: 0,
       marker: {
         enabled: false
       }
     }]
   });
 
-  $("aside .banner").removeClass('is-hidden');
 
-  $(".banner .close").on('click', function(){
-    $(this).parent().addClass('is-hidden');
-  });
-
-
-  //TURN SMART PRICING ON AND OFF
   $(".toggle").on('click', function(){
     $(this).toggleClass('on off');
 
     if($(this).hasClass('on')){
-      $('.contain span').text('on')
-
-      //remove banner
-      $('.banner').hide().addClass('is-hidden');
-
       $('body').removeClass('sp_off').addClass('sp_on');
 
-      //replace data from base to dynamic
+      //$('.banner').hide().addClass('is-hidden');
+
+      $(".input_module input").val('');
+
       chart.series[0].setData(nightly_dynamic_prices, {
         redraw: true
       });
 
-
     } else {
-
-      $('.contain span').text('off')
       $('body').removeClass('sp_on').addClass('sp_off');
 
-      $('.banner').show().removeClass('is-hidden');
+      //$('.banner').show().removeClass('is-hidden');
 
-      //remove plot lines
       removeLine('minimum');
       removeLine('maximum');
 
-      if(typeof chart.series[2] !== "undefined") {
-        //remove min legend
-        chart.series[2].update({
-          showInLegend: false
-        });
+      invertColors(0, 'reset')
 
-        min_prices = [];
+      destroySuggestionsLineIfExist()
 
-        invertColors(val)
-
-        chart.series[2].setData(min_prices, {
-          redraw: true
-        });
-
-        val = 0;
-      }
-
-      //replace data from dynamic to base
       chart.series[0].setData(nightly_base_prices, {
         redraw: true
       });
     }
   });
 
-  function invertColors(val){
-    chart.series[1].update({name:'new title'});
-    chart.series[1].update({
-      threshold: val,
-      negativeColor: "#F3F5F5"
-    });
-  }
+
 
   function addMinLine(val){
     removeLine('minimum');
@@ -549,7 +520,7 @@ $(function () {
       value: val,
       width: 1,
       id: 'minimum',
-      zIndex: 1,
+      zIndex: 2,
       label: {
         text: "Min Price",
         useHTML: true,
@@ -567,7 +538,7 @@ $(function () {
       value: val,
       width: 1,
       id: 'maximum',
-      zIndex: 1,
+      zIndex: 2,
       label: {
         text: "Max Price",
         useHTML: true,
@@ -580,6 +551,218 @@ $(function () {
     chart.yAxis[0].removePlotLine(id);
   }
 
+  function newBase(val){
+    nightly_base_prices = [];
+
+    $.each( chart.series[0].data, function( index, value ){
+      nightly_base_prices.push([value.x,parseInt(val)])
+    });
+
+    var mainSeries = chart.get('nightly');
+
+    //replace data
+    mainSeries.setData(nightly_base_prices, {
+      redraw: true
+    });
+  }
+
+  function destroySuggestionsLineIfExist(){
+    var minSeries = chart.get('min_bound');
+
+    if(typeof minSeries !== "undefined") {
+      console.log("the min graph exists and should be destroyed")
+      minSeries.remove();
+    }
+  }
+
+  function minBound(newMinPrice){
+    nightly_dynamic_prices_new = [];
+    min_prices = [];
+
+    var minBound = false;
+
+    $.each( nightly_dynamic_prices, function( index, value ){
+
+      var currentDate = value[0];
+      var currentPrice = value[1];
+
+      if(newMinPrice > currentPrice) {
+        nightly_dynamic_prices_new.push([currentDate,parseInt(newMinPrice)])
+        min_prices.push([currentDate,parseInt(currentPrice)])
+
+        minBound = true;
+      } else {
+        nightly_dynamic_prices_new.push([currentDate,parseInt(currentPrice)])
+        min_prices.push([currentDate,parseInt(currentPrice)])
+      }
+    });
+
+    var nightly_prices = chart.get('nightly');
+    nightly_prices.setData(nightly_dynamic_prices_new, {
+      redraw: true
+    });
+
+
+    destroySuggestionsLineIfExist();
+
+
+    if(minBound) {
+      console.log('min bound, pop a banner');
+      // $("aside .banner").removeClass('is-hidden');
+    }
+    else {
+      console.log('not min bound')
+      //$("aside .banner").addClass('is-hidden');
+    }
+
+    if(minBound) {
+      chart.addSeries({
+        type: 'spline',
+        name: 'Suggested Price',
+        data: min_prices,
+        animation: false,
+        color: '#41A499',
+        id: 'min_bound',
+        className: 'suggested',
+        label: '',
+        zIndex: 5,
+        lineWidth: 1,
+        dashStyle: 'Dash',
+        showInLegend: true,
+        legendIndex:1,
+        marker: {
+          enabled: false,
+          lineWidth: 2,
+          lineColor: '#C0CCCC',
+          fillColor: '#ffffff',
+          symbol: 'circle',
+          states: {
+            hover: {
+              lineColor: '#484848',
+              radius: 5,
+              lineWidthPlus: 0,
+              radiusPlus: 0,
+              animation: {
+                duration: 0
+              }
+            }
+          }
+        }
+      });
+    }
+  }
+
+  var minVar, maxVar;
+  function invertColors(val, type){
+    var marketBand = chart.get('band');
+
+    if(type == 'min'){
+      minVar = val;
+
+      if(maxVar) {
+        var currentMax = chart.yAxis[0].max;
+        var top = currentMax + maxVar;
+
+        marketBand.update({
+          zones: [
+            {
+              value: minVar,
+              className: 'below'
+            },
+            {
+              value: maxVar,
+              className: 'mid'
+            },
+            {
+              value: top,
+              className: 'top'
+            }
+          ]
+        });
+      } else {
+        marketBand.update({
+          zones: [
+            {
+              value: minVar,
+              className: 'below'
+            }
+          ]
+        });
+      }
+    }
+    else if (type == 'max'){
+      maxVar = val;
+
+      var currentMax = chart.yAxis[0].max;
+      var top = currentMax + maxVar;
+
+      console.log(maxVar)
+      if(minVar) {
+        marketBand.update({
+          zones: [
+            {
+              value: minVar,
+              className: 'below'
+            },
+            {
+              value: maxVar,
+              className: 'mid'
+            },
+            {
+              value: top,
+              className: 'top'
+            }
+          ]
+        });
+      } else {
+        marketBand.update({
+          zones: [
+            {
+              value: maxVar,
+              className: 'mid'
+            },
+            {
+              value: top,
+              className: 'top'
+            }
+          ]
+        });
+      }
+    }
+    else if (type= 'reset'){
+      marketBand.update({
+        zones: [{value: 0}]
+      });
+    }
+  }
+
+  var initMax = chart.yAxis[0].max;
+  function maxHandler(value){
+    var currentMax = chart.yAxis[0].max;
+
+    removeLine('maximum');
+    addMaxLine(value);
+    invertColors(value, 'max');
+
+    if(value > currentMax) {
+      chart.yAxis[0].update({
+        max: value
+      })
+    }
+    else if (value < initMax) {
+      chart.yAxis[0].update({
+        max: initMax
+      })
+    }
+  }
+
+  function minHandler(value){
+    removeLine('minimum');
+    invertColors(value, 'min');
+    addMinLine(value);
+    minBound(value);
+  }
+
   $(".tip").on('click', function(e){
     e.preventDefault();
 
@@ -590,146 +773,24 @@ $(function () {
     input.val(value);
 
     if(parentType.hasClass('min_price')){
-      addMinLine(value);
-      minBound(value);
-      invertColors(value);
+      minHandler(value)
     }
     else if(parentType.hasClass('max_price')){
-      addMaxLine(value);
+      maxHandler(value)
     }
     else if(parentType.hasClass('nightly_price')){
-      //replace data
       newBase(value);
     }
-
   });
-
-  function newBase(val){
-    nightly_base_prices = [];
-
-    $.each( chart.series[0].data, function( index, value ){
-      nightly_base_prices.push([value.x,parseInt(val)])
-    });
-
-    //replace data
-    chart.series[0].setData(nightly_base_prices, {
-      redraw: true
-    });
-  }
-
-  var minBoundDestroyCount = 0;
-
-
-  function minBound(newMinPrice){
-    nightly_dynamic_prices_new = [];
-    min_prices = [];
-
-    var minBound = false;
-
-    // loop through every single price
-    $.each( nightly_dynamic_prices, function( index, value ){
-
-      var currentDate = value[0];
-      var currentPrice = value[1];
-
-      if(newMinPrice > currentPrice) {
-        // store x value (date) and y.value into new array
-        nightly_dynamic_prices_new.push([currentDate,parseInt(newMinPrice)])
-        min_prices.push([currentDate,parseInt(currentPrice)])
-
-        minBound = true;
-      } else {
-        //if not overridden, push back as is into the array
-        nightly_dynamic_prices_new.push([currentDate,parseInt(currentPrice)])
-        min_prices.push([currentDate,parseInt(currentPrice)])
-      }
-    });
-
-    chart.series[0].setData(nightly_dynamic_prices_new, {
-      redraw: true
-    });
-
-    // if(!minBound) {
-    //   chart.series[2].update({
-    //     showInLegend: false
-    //   });
-    // }
-
-
-
-    if(minBound) {
-      // console.log('min bound')
-      //pop a banner
-      // $("aside .banner").removeClass('is-hidden');
-    }
-    else {
-      console.log('DESTROY SERIES')
-
-      var id = 'min_price_' + minBoundDestroyCount,
-          series = chart.get(id);
-      series.remove();
-
-      minBoundDestroyCount = minBoundDestroyCount++;
-    }
-
-    var id = 'min_price_' + minBoundDestroyCount;
-
-    chart.addSeries({
-      type: 'spline',
-      name: 'Suggested Price',
-      data: min_prices,
-      animation: false,
-      color: '#41A499',
-      id: id,
-      className: 'suggested',
-      label: '',
-      zIndex: 1,
-      lineWidth: 1,
-      dashStyle: 'Dash',
-      showInLegend: true,
-      legendIndex:1,
-      marker: {
-        enabled: false,
-        lineWidth: 2,
-        lineColor: '#C0CCCC',
-        fillColor: '#ffffff',
-        symbol: 'circle',
-        states: {
-          hover: {
-            lineColor: '#484848',
-            radius: 5,
-            lineWidthPlus: 0,
-            radiusPlus: 0,
-            animation: {
-              duration: 0
-            }
-          }
-        }
-      }
-    });
-
-
-  }
-
-  function invertColors(val){
-    chart.series[1].update({
-      threshold: val,
-      negativeColor: "#efefef"
-    });
-  }
 
   $(".min_price input").on('blur', function(){
     var newValue = $(this).val();
-    removeLine('minimum');
-    invertColors(newValue);
-    addMinLine(newValue);
-    minBound(newValue);
+    minHandler(newValue);
   });
 
   $(".max_price input").on('blur', function(){
     var newValue = $(this).val();
-    removeLine('maximum');
-    addMaxLine(newValue);
+    maxHandler(newValue);
   });
 
   $(".nightly_price input").on('blur', function(){
@@ -737,9 +798,12 @@ $(function () {
     newBase(newValue);
   });
 
-  // console.log(chart.yAxis[0].min)
+  $("aside .banner").removeClass('is-hidden');
 
-  //allow enter key to work like tabs in inputs
+  $(".banner .close").on('click', function(){
+    $(this).parent().addClass('is-hidden');
+  });
+
   $('input').on("keypress", function(e) {
     if (e.keyCode == 13) {
       $(this).blur();

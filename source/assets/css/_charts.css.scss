@@ -39,7 +39,6 @@ $highlight-color-10: #e6ebf5 !default; // Pressed button, color axis min color.
     line-height: normal;
     z-index: 0; /* #1072 */
     -webkit-tap-highlight-color: rgba(0,0,0,0);
-    font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
     font-size: 12px;
 }
 .highcharts-root text {
@@ -238,7 +237,7 @@ g.highcharts-series,
 .highcharts-area {
     fill-opacity: 1;
     stroke-width: 0;
-    transition: all .3s ease;
+    // transition: all .3s ease;
 }
 .highcharts-markers {
     stroke-width: 1px;
@@ -266,7 +265,7 @@ g.highcharts-series,
     fill: none;
 }
 .highcharts-halo {
-    fill-opacity: 0.25;
+    // fill-opacity: 0.25;
     stroke-width: 0;
     display: none;
 
@@ -287,7 +286,7 @@ g.highcharts-series,
   box-shadow: none;
 }
 .highcharts-column-series .highcharts-point-hover {
-    fill-opacity: 0.75;
+    // fill-opacity: 0.75;
     transition: fill-opacity 50ms;
 }
 .highcharts-pie-series .highcharts-point {
@@ -295,7 +294,7 @@ g.highcharts-series,
     stroke: $background-color;
 }
 .highcharts-pie-series .highcharts-point-hover {
-    fill-opacity: 0.75;
+    // fill-opacity: 0.75;
     transition: fill-opacity 50ms;
 }
 .highcharts-funnel-series .highcharts-point {
@@ -303,7 +302,7 @@ g.highcharts-series,
     stroke: $background-color;
 }
 .highcharts-funnel-series .highcharts-point-hover {
-    fill-opacity: 0.75;
+    // fill-opacity: 0.75;
     transition: fill-opacity 50ms;
 }
 .highcharts-funnel-series .highcharts-point-select {
@@ -315,7 +314,7 @@ g.highcharts-series,
     stroke: $background-color;
 }
 .highcharts-pyramid-series .highcharts-point-hover {
-    fill-opacity: 0.75;
+    // fill-opacity: 0.75;
     transition: fill-opacity 50ms;
 }
 .highcharts-pyramid-series .highcharts-point-select {
@@ -346,7 +345,7 @@ g.highcharts-series,
     cursor: pointer;
 }
 .highcharts-treemap-series .highcharts-internal-node-interactive:hover {
-    fill-opacity: 0.75;
+    // fill-opacity: 0.75;
 }
 
 
@@ -792,5 +791,37 @@ input.highcharts-range-selector {
         line-height: 1.1;
         color: #7b7b7b;
         margin-top: -1px;
+    }
+}
+
+
+// .highcharts-zone-area-0 {
+//     fill: rgba(11,181,181,.2);
+// }
+
+// .highcharts-zone-area-1 {
+//     fill: red;
+// }
+
+// .highcharts-zone-area-2 {
+//     fill: green;
+// }
+
+// .highcharts-zone-area-3 {
+//     fill: blue;
+// }
+.highcharts-area {
+    // fill: #d1f3f3;
+    fill: rgba(11,181,181,.2);
+
+    &.below {
+        fill: rgba(164,164,164,.2)
+    }
+
+    &.mid {
+      fill: rgba(11,181,181,.2);;
+    }
+    &.top {
+        fill: rgba(164,164,164,.2)
     }
 }
