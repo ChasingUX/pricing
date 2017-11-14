@@ -608,8 +608,8 @@ $(function () {
       var bookingValue = numberOfMin * 200;
 
       // var title = numberOfMin + " of your nightly prices are not matching demand"
-      var title = "Earn up to $" + numberWithCommas(bookingValue) + " more by reducing your min price"
-      var body = "Your min price of $" + val + " is preventing " + numberOfMin + " nights from being priced automatically and may result in those nights going unbooked."
+      var title = "Earn up to $" + numberWithCommas(bookingValue) + " more from July-September"
+      var body = "Your min price of $" + val + " is preventing " + numberOfMin + " nights from being priced automatically and may result in unbooked nights."
       var link = "Tip: Lower your min price to $<span>200</span>"
       var type = "min_price"
 
