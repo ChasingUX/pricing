@@ -564,6 +564,10 @@ $(function () {
     }
   }
 
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   var numberOfMin = 0;
 
   function minBound(newMinPrice){
@@ -602,9 +606,11 @@ $(function () {
       // console.log('min bound, pop a banner');
 
       var val = $('.min_price input').val();
+      var bookingValue = numberOfMin * 200;
 
-      var title = numberOfMin + " of your nightly prices are not matching demand"
-      var body = "Your min price of $" + val + " is preventing you from being priced automatically. Our price suggestions are designed to maximize occupancy at the highest price"
+      // var title = numberOfMin + " of your nightly prices are not matching demand"
+      var title = "Earn up to $" + numberWithCommas(bookingValue) + " more by reducing your min price"
+      var body = "Your min price of $" + val + " is preventing " + numberOfMin + " nights from being priced automatically and may result in those nights going unbooked."
       var link = "Tip: Lower your min price to $<span>200</span>"
       var type = "min_price"
 
