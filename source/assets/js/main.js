@@ -587,7 +587,6 @@ $(function () {
 
         numberOfMin++;
 
-
         minBound = true;
       } else {
         nightly_dynamic_prices_new.push([currentDate,parseInt(currentPrice)])
@@ -617,7 +616,7 @@ $(function () {
       showBanner(title, body, link, type)
     }
     else {
-      console.log('not min bound')
+      // console.log('not min bound')
       removeBanner();
     }
 
@@ -912,4 +911,15 @@ $(function () {
       return false;
     }
   });
+
+  $(window).scroll(function(){
+
+    var offset = $(document).height() - 50;
+
+    if($(window).scrollTop() >= (offset - $(window).height())){
+      $('.toolbar').removeClass('scroll')
+    } else {
+      $('.toolbar').addClass('scroll')
+    }
+  })
 });

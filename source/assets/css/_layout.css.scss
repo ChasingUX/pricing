@@ -456,7 +456,11 @@ $wrapper_width: 1030px;
         left: 50%;
         margin-left: -515px;
         padding: 0;
-        box-shadow: 0px -9px 15px -7px rgba(0, 0, 0, 0.09);
+        transition: box-shadow .3s ease;
+
+        &.scroll {
+          box-shadow: 0px -9px 15px -7px rgba(0, 0, 0, 0.09);
+        }
       }
     }
 
