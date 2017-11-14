@@ -821,10 +821,10 @@ $(function () {
 
 
   function positionBanner(){
-    var scrollTop     = $(window).scrollTop(),
+    var scrollTop     = $(document).height(),
     elementOffset = $('h2').offset().top,
-    distance      = (elementOffset - scrollTop),
-    offset = 85,
+    distance      = (scrollTop - elementOffset),
+    offset = 30,
     bannerMargin = distance + offset
 
     $(".banner").css('marginTop', bannerMargin)
