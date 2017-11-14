@@ -757,6 +757,8 @@ $(function () {
   }
 
   function minHandler(value){
+    numberOfMin = 0;
+
     removeLine('minimum');
     invertColors(value, 'min');
     addMinLine(value);
