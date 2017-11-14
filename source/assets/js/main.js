@@ -581,7 +581,8 @@ $(function () {
         nightly_dynamic_prices_new.push([currentDate,parseInt(newMinPrice)])
         min_prices.push([currentDate,parseInt(currentPrice)])
 
-        numberOfMin = index;
+        numberOfMin++;
+
 
         minBound = true;
       } else {
@@ -595,17 +596,15 @@ $(function () {
       redraw: true
     });
 
-
     destroySuggestionsLineIfExist();
-
 
     if(minBound) {
       // console.log('min bound, pop a banner');
 
       var val = $('.min_price input').val();
 
-      var title = "Some of your prices are not dynamic"
-      var body = "Your min price of $" + val + " is preventing " + numberOfMin + " nights from being priced in line with the market over the next 3 months."
+      var title = numberOfMin + " of your nightly prices are not matching demand"
+      var body = "Your min price of $" + val + " is preventing you from being priced automatically. Our price suggestions are designed to maximize occupancy at the highest price"
       var link = "Tip: Lower your min price to $<span>200</span>"
       var type = "min_price"
 
@@ -794,7 +793,8 @@ $(function () {
     });
 
 
-    var maxNumberReduced = maxNumberOnBand - 100;
+    var threshold = 100;
+    var maxNumberReduced = maxNumberOnBand - threshold;
 
     if(value > maxNumberReduced) {
       var title = "Your base price is higher than what guests are paying"
@@ -811,6 +811,20 @@ $(function () {
   // $('.banner .close').on('click', function(){
   //   $(this).closest('.banner_wrap').addClass('is-hidden');
   // })
+
+
+  function positionBanner(){
+    var scrollTop     = $(window).scrollTop(),
+    elementOffset = $('h2').offset().top,
+    distance      = (elementOffset - scrollTop),
+    offset = 85,
+    bannerMargin = distance + offset
+
+    $(".banner").css('marginTop', bannerMargin)
+  }
+
+  positionBanner();
+
 
   $(".toggle").on('click', function(){
     if($(this).hasClass('off')){
