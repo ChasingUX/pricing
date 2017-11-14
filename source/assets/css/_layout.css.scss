@@ -327,31 +327,11 @@ nav {
   }
 }
 
-.main .banner {
-  margin: 36px 0 0px 0;
-}
-
 aside .banner {
   margin: 32px 0;
 }
 
 .banner_wrap {
-  padding: 0 32px;
-  display: none;
-}
-
-.banner {
-  border: 2px solid #EBEBEB;
-  border-radius: 8px;
-  background: white;
-  position: relative;
-  padding: 20px 16px;
-  font-size: 15px;
-  z-index: 5;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  max-height: 180px;
   opacity: 1;
   transform: translateY(0px);
   transition: transform .4s ease, opacity .8s ease;
@@ -360,30 +340,61 @@ aside .banner {
   &.is-hidden {
     opacity: 0;
     transform: translateY(5px);
-    transition: transform .2s ease, opacity .2s ease;
+    transition: transform .2s ease, opacity .2s ease, maxHeight .3s ease;
   }
+}
 
-  span {
-    background-image: image-url("bulb.svg");
-    width: 20px;
-    height: 28px;
-    margin-right: 24px;
+.sidebar {
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+.banner {
+  border: 1px solid #e4e4e4;
+  border-radius: 3px;
+  background: white;
+  position: relative;
+  padding: 24px;
+  margin: 311px 0 16px 0;
+  font-size: 15px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  span.icon {
+    background-image: image-url("bulb_large.svg");
+    width: 37px;
+    height: 40px;
     background-size: 100%;
     background-repeat: no-repeat;
     display: inline-block;
+    position: relative;
+    left: -4px;
+    margin: 4px 0 11px 0;
   }
 
-  .body {
+  div, .body {
     display: flex;
     flex-direction: column;
     flex: 1;
 
     h4 {
-      font-family: 'Circular'
+      font-family: 'Circular_bold';
+      font-size: 19px;
+      line-height: 21px;
+      letter-spacing: -0.2px;
+      margin-bottom: 8px;
     }
 
     p {
-      margin: 4px 0;
+      margin: 0 0 16px 0;
+      // font-size: 19px;
+    }
+
+    a {
+      font-family: 'Circular';
     }
   }
 
@@ -395,6 +406,7 @@ aside .banner {
     background-size: 100%;
     background-repeat: no-repeat;
     display: inline-block;
+    display: none;
   }
 
   .tip {
@@ -419,25 +431,28 @@ $wrapper_width: 1030px;
   }
 
   .wrapper {
-    max-width: 1094px;
+    max-width: 1030px;
     margin: 0 auto;
+    justify-content: space-between;
 
     #container {
       padding-bottom: 150px;
     }
 
     .main {
-      width: 100%;
-      max-width: 810px;
-      padding: 64px 70px 0 0;
-      margin: 0 32px;
+      width: 678px;
+      padding: 64px 0 0 0;
+      margin: 0 40px 0 0;
+      display: flex;
+      flex-direction: column;
 
       p {
         max-width: 610px;
       }
 
       .toolbar {
-        width: calc(#{$wrapper_width} - 290px);
+        max-width: 1030px;
+        width: 100%;
         left: 50%;
         margin-left: -515px;
         padding: 0;
@@ -497,11 +512,11 @@ $wrapper_width: 1030px;
       border-top: 1px solid #EBEBEB;
     }
 
-    .sp_off {
-      .input_module {
-        width: 358px;
-      }
-    }
+    // .sp_off {
+    //   .input_module {
+    //     width: 358px;
+    //   }
+    // }
   }
 
   &.sp_on {
@@ -603,6 +618,7 @@ $wrapper_width: 1030px;
   }
 }
 
+
 [data-tooltip],
 .tooltip {
   position: relative;
@@ -669,7 +685,7 @@ $wrapper_width: 1030px;
   width: 230px;
   background-color: #fff;
   color: #444;
-  content: url("data:image/svg+xml;charset=utf8,<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><text x='0' y='5' style='alignment-baseline:hanging;font-size:15px;fill:#444; font-weight:bold; font-family:Circular Air Pro,Arial'>Getting to know your market</text><text  style='alignment-baseline:hanging;font-size:15px;font-family: Circular Air Pro, Arial;font-weight: 100;fill:#444;'><tspan x='0' y='40' dy='0'>Your market zone represents the</tspan><tspan x='0' y='40' dy='20'>range that guests are paying for</tspan><tspan x='0' y='40' dy='40'>listings similar to yours. If your </tspan><tspan x='0' y='40' dy='60'>nightly price falls within this zone,</tspan><tspan x='0' y='40' dy='80'>you can anticipate being booked</tspan><tspan x='0' y='40' dy='100'>for that date.</tspan></text></svg>");
+  content: url("data:image/svg+xml;charset=utf8,<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><text x='0' y='5' style='alignment-baseline:hanging;font-size:15px;fill:#444; font-weight:bold; font-family:Circular Air Pro,Arial'>Getting to know your market</text><text  style='alignment-baseline:hanging;font-size:15px;font-family: Circular Air Pro, Arial;font-weight: 100;fill:#444;'><tspan x='0' y='40' dy='0'>This represents the range that</tspan><tspan x='0' y='40' dy='20'>guests are paying for listings</tspan><tspan x='0' y='40' dy='40'>similar to yours. If your nightly</tspan><tspan x='0' y='40' dy='60'>price falls within this zone,</tspan><tspan x='0' y='40' dy='80'>you can anticipate being booked</tspan><tspan x='0' y='40' dy='100'>for that date.</tspan></text></svg>");
   font-size: 15px;
   line-height: 18px !important;
   letter-spacing: 0.2px !important;

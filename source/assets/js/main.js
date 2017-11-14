@@ -286,7 +286,7 @@ $(function () {
   ]
 
   var nightlyLabel = 'Your nightly price';
-  var marketLabel = 'Your market zone';
+  var marketLabel = 'Guests are paying';
 
   var chart = Highcharts.chart('container', {
     chart: {
@@ -386,7 +386,6 @@ $(function () {
           if(flag){
             if (flag > this.y) {
               s += '<br><span class="series_name">' + this.series.name + ': </span><b class="right">$' + this.y + '</b><p class="small">Your min price is preventing Smart Pricing from setting your price.</p>';
-              // console.log('min bound')
             } else {
               s += '<br><span class="series_name">' + this.series.name + ': </span><b class="right">$' + this.y + '</b>';
             }
@@ -476,40 +475,30 @@ $(function () {
     }]
   });
 
+  function turn_SP_on(){
+    $('body').removeClass('sp_off').addClass('sp_on');
+    $(".input_module input").val('');
+    $(".toggle").toggleClass('on off');
+    removeBanner();
+    chart.series[0].setData(nightly_dynamic_prices, {
+      redraw: true
+    });
+  }
 
-  $(".toggle").on('click', function(){
-    $(this).toggleClass('on off');
+  function turn_SP_off(){
+    $('body').removeClass('sp_on').addClass('sp_off');
+    $(".toggle").toggleClass('on off');
+    removeBanner();
+    numberOfMin = 0;
 
-    if($(this).hasClass('on')){
-      $('body').removeClass('sp_off').addClass('sp_on');
-
-      //$('.banner').hide().addClass('is-hidden');
-
-      $(".input_module input").val('');
-
-      chart.series[0].setData(nightly_dynamic_prices, {
-        redraw: true
-      });
-
-    } else {
-      $('body').removeClass('sp_on').addClass('sp_off');
-
-      //$('.banner').show().removeClass('is-hidden');
-
-      removeLine('minimum');
-      removeLine('maximum');
-
-      invertColors(0, 'reset')
-
-      destroySuggestionsLineIfExist()
-
-      chart.series[0].setData(nightly_base_prices, {
-        redraw: true
-      });
-    }
-  });
-
-
+    removeLine('minimum');
+    removeLine('maximum');
+    invertColors(0, 'reset')
+    destroySuggestionsLineIfExist()
+    chart.series[0].setData(nightly_base_prices, {
+      redraw: true
+    });
+  }
 
   function addMinLine(val){
     removeLine('minimum');
@@ -575,6 +564,8 @@ $(function () {
     }
   }
 
+  var numberOfMin = 0;
+
   function minBound(newMinPrice){
     nightly_dynamic_prices_new = [];
     min_prices = [];
@@ -589,6 +580,8 @@ $(function () {
       if(newMinPrice > currentPrice) {
         nightly_dynamic_prices_new.push([currentDate,parseInt(newMinPrice)])
         min_prices.push([currentDate,parseInt(currentPrice)])
+
+        numberOfMin = index;
 
         minBound = true;
       } else {
@@ -607,12 +600,20 @@ $(function () {
 
 
     if(minBound) {
-      console.log('min bound, pop a banner');
-      // $("aside .banner").removeClass('is-hidden');
+      // console.log('min bound, pop a banner');
+
+      var val = $('.min_price input').val();
+
+      var title = "Some of your prices are not dynamic"
+      var body = "Your min price of $" + val + " is preventing " + numberOfMin + " nights from being priced in line with the market over the next 3 months."
+      var link = "Tip: Lower your min price to $<span>200</span>"
+      var type = "min_price"
+
+      showBanner(title, body, link, type)
     }
     else {
       console.log('not min bound')
-      //$("aside .banner").addClass('is-hidden');
+      removeBanner();
     }
 
     if(minBound) {
@@ -763,23 +764,102 @@ $(function () {
     minBound(value);
   }
 
-  $(".tip").on('click', function(e){
+  function showBanner (title, body, link, type){
+    $(".banner").find('h4').html(title);
+    $(".banner").find('p').html(body);
+    $(".banner").find('a').html(link);
+
+    $(".banner .body").addClass(type)
+
+    setTimeout(function(){
+      $(".banner_wrap").removeClass('is-hidden');
+    }, 500)
+  }
+
+  function removeBanner(){
+    $(".banner_wrap").addClass('is-hidden');
+    $(".banner div").removeClass().addClass('body');
+  }
+
+  function basePriceChange(value){
+    var marketBand = chart.get('band');
+    var maxNumberOnBand = 0;
+
+
+    $.each( marketBand.data, function( index, value ){
+      var high = value.high;
+      if(high > maxNumberOnBand){
+        maxNumberOnBand = high;
+      }
+    });
+
+
+    var maxNumberReduced = maxNumberOnBand - 100;
+
+    if(value > maxNumberReduced) {
+      var title = "Your base price is higher than what guests are paying"
+      var body = "Become more competitive by pricing your listing in line with your market."
+      var link = "Tip: Lower your base price to $<span>250</span>"
+      var type = "nightly_price"
+
+      showBanner(title, body, link, type);
+    }
+
+    newBase(value);
+  }
+
+  // $('.banner .close').on('click', function(){
+  //   $(this).closest('.banner_wrap').addClass('is-hidden');
+  // })
+
+  $(".toggle").on('click', function(){
+    if($(this).hasClass('off')){
+      turn_SP_on()
+    } else {
+      turn_SP_off()
+    }
+  });
+
+  $(".turn_on").on('click', function(e){
+    turn_SP_on();
+    removeBanner();
+
+    e.preventDefault();
+  });
+
+  $(".wrapper").on('click','.tip', function(e){
     e.preventDefault();
 
-    var parentType = $(this).parent('div');
-    var input = $(this).prev('input');
-    var value = $(this).find('span').text();
-
-    input.val(value);
+    var parentType = $(this).parent('div'),
+        value = $(this).find('span').text();
 
     if(parentType.hasClass('min_price')){
       minHandler(value)
+
+      if(parentType.hasClass('body')){
+        $('.min_price input').val(value);
+      }
+      else {
+        var input = $(this).prev('input');
+        input.val(value);
+      }
     }
     else if(parentType.hasClass('max_price')){
       maxHandler(value)
+
+      var input = $(this).prev('input');
+      input.val(value);
     }
     else if(parentType.hasClass('nightly_price')){
-      newBase(value);
+      basePriceChange(value)
+
+      if(parentType.hasClass('body')){
+        $('.nightly_price input').val(value);
+        removeBanner();
+      } else {
+        var input = $(this).prev('input');
+        input.val(value);
+      }
     }
   });
 
@@ -795,14 +875,14 @@ $(function () {
 
   $(".nightly_price input").on('blur', function(){
     var newValue = $(this).val();
-    newBase(newValue);
+    basePriceChange(newValue)
   });
 
-  $("aside .banner").removeClass('is-hidden');
+  // $("aside .banner").removeClass('is-hidden');
 
-  $(".banner .close").on('click', function(){
-    $(this).parent().addClass('is-hidden');
-  });
+  // $(".banner .close").on('click', function(){
+  //   $(this).parent().addClass('is-hidden');
+  // });
 
   $('input').on("keypress", function(e) {
     if (e.keyCode == 13) {

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="24px" viewBox="0 0 22 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>Indicator - Lightbulb</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="DLS-Icons-03NOV2017" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Indicator-artboard" transform="translate(-561.000000, -248.000000)">
+            <g id="Indicator---Lightbulb" transform="translate(560.000000, 248.000000)">
+                <rect id="Container" x="0" y="0" width="24" height="24"></rect>
+                <path d="M16.3320615,10.8432923 C16.3320615,13.2423692 14.3871385,15.1882154 11.9871385,15.1882154 C9.58713846,15.1882154 7.64221538,13.2423692 7.64221538,10.8432923 C7.64221538,8.44329231 9.58713846,6.49836923 11.9871385,6.49836923 C14.3871385,6.49836923 16.3320615,8.44329231 16.3320615,10.8432923" id="Fill-9" fill="#00D1C1"></path>
+                <path d="M19.2405846,10.8090462 C19.2405846,6.52227692 15.5261231,3.1032 11.1405846,3.5952 C7.85350769,3.96350769 5.16458462,6.6312 4.7732,9.91550769 C4.41504615,12.9118154 5.88458462,15.5924308 8.21258462,17.0075077 C8.99258462,17.4819692 9.42550769,18.3718154 9.42550769,19.2847385 L9.42550769,20.5964308 C9.42550769,22.0078154 10.5692,23.1524308 11.9796615,23.1524308 C13.3910462,23.1524308 14.5347385,22.0078154 14.5347385,20.5964308 L14.5347385,19.1748923 C14.5347385,18.3099692 14.9565846,17.4801231 15.6987385,17.0370462 C17.8190462,15.7705846 19.2405846,13.4582769 19.2405846,10.8090462 Z" id="Stroke-11" stroke="#484848" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M12.9674462,14.3376923 L12.9674462,19.4801538" id="Stroke-13" stroke="#484848" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M10.9923385,19.4804308 L10.9923385,9.75581538 C10.9923385,9.21027692 11.4344923,8.76812308 11.9800308,8.76812308 C12.5255692,8.76812308 12.9677231,9.21027692 12.9677231,9.75581538 L12.9677231,12.0967385" id="Stroke-15" stroke="#484848" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M9.42523077,19.4804308 L14.5353846,19.4804308" id="Stroke-17" stroke="#484848" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M16.7737538,2.16461538 C19.7377538,3.83907692 21.7389846,7.02 21.7389846,10.6670769 C21.7389846,11.1923077 21.6983692,11.7073846 21.6189846,12.2095385" id="Stroke-19" stroke="#484848" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M5.60350769,3.27876923 C7.31396923,1.80092308 9.54227692,0.908307692 11.9801231,0.908307692" id="Stroke-21" stroke="#484848" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M2.46153846,8.50172308 C2.648,7.67833846 2.93876923,6.89372308 3.31907692,6.16449231" id="Stroke-23" stroke="#484848" stroke-linecap="round" stroke-linejoin="round"></path>
+            </g>
+        </g>
+    </g>
+</svg>
