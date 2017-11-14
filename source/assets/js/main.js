@@ -312,7 +312,7 @@ $(function () {
       },
       symbolPadding: 8,
       padding: 0,
-      margin: 48,
+      margin: 16,
       itemDistance: 32,
       itemHoverStyle: '$484848',
       labelFormatter: function () {
