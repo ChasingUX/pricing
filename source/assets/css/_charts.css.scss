@@ -770,8 +770,13 @@ input.highcharts-range-selector {
     overflow: visible!important;
 }
 
+.highcharts-legend-item span {
+    cursor: default!important;
+}
+
 .highcharts-legend-item a {
     color: #444444;
+    cursor: default;
 
     &:hover {
         text-decoration: none;

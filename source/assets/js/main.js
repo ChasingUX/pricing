@@ -922,4 +922,9 @@ $(function () {
       $('.toolbar').addClass('scroll')
     }
   })
+
+  $(".modal, .toolbar a, .highcharts-legend-item a").on('click', function(e){
+
+    e.preventDefault();
+  });
 });
